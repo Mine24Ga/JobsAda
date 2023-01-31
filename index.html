@@ -70,6 +70,49 @@
         </nav>
     </header>
 <!------------------------------------------- FIN HEADER ------------------------------------->
+<!------------------------------------------ INICIA MAIN ------------------------------------->
+<main class="container">
+    <!------------------------- FILTROS PARA SELECCIONAR -------------------------------->
+    <form id="search-form" action="submit" class="p-2 columns is-justify-content-center">
+
+       <div class="column is-2 is-12-mobile">
+         <select name="Location" id="location-search" class="p-2">
+             <option value="Location">Location...</option>
+             <option value="CABA">CABA</option>
+             <option value="GBA Sur">GBA Sur</option>
+             <option value="GBA Oeste">GBA Oeste</option>
+             <option value="GBA Norte">GBA Norte</option>
+         </select>
+       </div>
+
+       <div class="column is-2 is-12-mobile">
+         <select name="Seniority" id="seniority-search" class="p-2">
+             <option value="Seniority">Seniority...</option>
+             <option value="Trainee">Trainee</option>
+             <option value="Junior">Junior</option>
+             <option value="Semi Senior">Semi Senior</option>
+             <option value="Senior">Senior</option>
+         </select>
+       </div>
+
+       <div class="column is-2 is-12-mobile">
+         <select name="Category" id="category-search" class="p-2">
+             <option value="Category">Category...</option>
+             <option value="Developer">Developer</option>
+             <option value="DBA">DBA</option>
+             <option value="Data Analyst">Data Analyst</option>
+             <option value="DevOps">DevOps</option>
+             <option value="QA automation">QA automation</option>
+             <option value="QA manual">QA manual</option>
+         </select>
+       </div>
+
+       <div class="column is-2 is-12-mobile">
+         <button  value="Search" id="btn-search" class="is-info  button">Search</button> 
+         <button  value="Clear" id="btn-cancel-search" class=" button is-danger " >Clear</button>
+       </div>
+    </form>
+<!--------------------------------------- FIN DE FILTROS --------------------------------->
 
 
 

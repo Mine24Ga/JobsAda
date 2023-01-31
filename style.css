@@ -1,0 +1,9 @@
+form select {
+    width: 100%;
+    border-radius: 0.5em;
+    border: 2px solid #6771c9;
+  }
+
+button {
+    border-radius: 0.5em;
+}
