@@ -17,37 +17,39 @@ const createJobForm = document.querySelector("#create-job-form");
 const btnCancel = document.querySelector("#btn-cancel");
 const btnSubmit = document.querySelector("#btn-submit");
 const searchForm = document.querySelector("#search-form");
-const cardContainer = document.querySelector('#cards-container');
+const cardContainer = document.querySelector("#cards-container");
+const errorContainer = document.querySelector("#error-container");
 
 /********************************************************************************************* 
                                         EVENTOS
 **********************************************************************************************/
 //mostrar formulario para crear empleo
 const showFormJob = () => {
-  hideElement(searchForm);
-  showElement(createJobForm);
+    hideElement(searchForm);
+    showElement(createJobForm);
 };
 
 btnCreateJob.addEventListener("click", () => {
-  showFormJob();
+    showFormJob();
 });
 
 //volver a la vista principal de las cards
 const showSearch = () => {
-  hideElement(createJobForm);
-  showElement(searchForm);
+    hideElement(createJobForm);
+    showElement(searchForm);
 };
 
 btnCancel.addEventListener("click", () => {
-  showSearch();
+    showSearch();
 });
-
 
 /********************************************************************************************* 
                                         OPERACIONES
 **********************************************************************************************/
 let isEditing = false;
 const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
+
+//GET
 // Obtener todos los empleos
 const getJobs = async () => {
     try {
@@ -55,21 +57,16 @@ const getJobs = async () => {
         const jobs = await response.json();
         console.log(jobs);
         createJobsCard(jobs);
-       
-    } 
-    catch (error) {
+    } catch (error) {
         alert("La base de datos no esta disponible en este momento");
-       
     }
-}
-getJobs()
+};
+getJobs();
 
-
-
-//Cards de empleos 
+//Cards para la vista de empleos 
 const createJobsCard = (jobs) => {
-    cardContainer.innerHTML = '';
-    for (const {name, description, location, seniority, category, id} of jobs) {
+    cardContainer.innerHTML = "";
+    for (const { name, description, location, seniority, category, id } of jobs) {
         cardContainer.innerHTML += `    
         <div id="card" data-card=${id} class=" is-3 card column p-4 ">
         <div class="content">
@@ -82,13 +79,46 @@ const createJobsCard = (jobs) => {
             <span class="has-background-primary p-3 is-size-7 m-2">${seniority}</span>
         </div>
         <div id="buttons-container" class="control">
-            <button data=${id}  class="button is-info"> See details</button>
+            <button onClick="seeJobDetails(${id})" class="button is-info"> See details</button>
             <button class="button is-danger">Delete Job</button>
         </div>
-    </div>`
-
+    </div>`;
     }
-}
+};
+//Obtener un empleo
+const seeJobDetails = (jobId) => {
+    fetch(`${base_url}${jobId}`)
+        .then((response) => response.json())
+        .then((data) => createCardDetail(data));
+};
 
+const createCardDetail = (cardDetail) => {
+    const { name, location, category, seniority, description } = cardDetail;
+    cardContainer.innerHTML = `
+  <div class="card-detail">
+  <p class="return" onClick="getJobs()">Go back</p> 
+  <div class="job-container">
+        <div class="job-details">
 
+              <h2>${name}</h2>
 
+              <div class="job-description">
+                  <h4>Job Description:</h4>
+                  <p>${description}</p>
+              </div>
+
+              <div class="tags-container">
+                  <h3>Tags: </h3> 
+                  <span>${location}</span> 
+                  <span>${category}</span> 
+                  <span>${seniority}</span>
+              </div>
+
+        </div>
+
+        <div class="button-container">
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </div>
+  </div>`
+};
