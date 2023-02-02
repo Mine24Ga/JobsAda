@@ -48,23 +48,13 @@ btnCancel.addEventListener("click", () => {
 **********************************************************************************************/
 let isEditing = false;
 const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
-// Obtener todos los usuarios
-/*const getJobs = () => {
-    fetch(`${base_url}/jobs`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch(() => alert("La base de datos no esta disponible en este momento"));
-    // .finally(() => console.log('finnaly'));
-  };
-getJobs();*/
-
+// Obtener todos los empleos
 const getJobs = async () => {
     try {
         const response = await fetch(`${base_url}/jobs`);
         const jobs = await response.json();
         console.log(jobs);
+        createJobsCard(jobs);
        
     } 
     catch (error) {
@@ -73,6 +63,32 @@ const getJobs = async () => {
     }
 }
 getJobs()
+
+
+
+//Cards de empleos 
+const createJobsCard = (jobs) => {
+    cardContainer.innerHTML = '';
+    for (const {name, description, location, seniority, category, id} of jobs) {
+        cardContainer.innerHTML += `    
+        <div id="card" data-card=${id} class=" is-3 card column p-4 ">
+        <div class="content">
+             <h2 class="title is-5">${name}</h2>
+            <p class="is-size-6">${description}</p>
+        </div>
+        <div class="media ">
+            <span  class="has-background-primary p-3 is-size-7 m-2">${location}</span>
+            <span class="has-background-primary p-3 is-size-7 m-2">${category}</span>
+            <span class="has-background-primary p-3 is-size-7 m-2">${seniority}</span>
+        </div>
+        <div id="buttons-container" class="control">
+            <button data=${id}  class="button is-info"> See details</button>
+            <button class="button is-danger">Delete Job</button>
+        </div>
+    </div>`
+
+    }
+}
 
 
 
