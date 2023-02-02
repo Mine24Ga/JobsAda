@@ -17,6 +17,7 @@ const createJobForm = document.querySelector("#create-job-form");
 const btnCancel = document.querySelector("#btn-cancel");
 const btnSubmit = document.querySelector("#btn-submit");
 const searchForm = document.querySelector("#search-form");
+const cardContainer = document.querySelector('#cards-container');
 
 /********************************************************************************************* 
                                         EVENTOS
@@ -45,4 +46,33 @@ btnCancel.addEventListener("click", () => {
 /********************************************************************************************* 
                                         OPERACIONES
 **********************************************************************************************/
-const base_url = "https://63c87103e52516043f527b92.mockapi.io/api/";
+let isEditing = false;
+const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
+// Obtener todos los usuarios
+/*const getJobs = () => {
+    fetch(`${base_url}/jobs`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch(() => alert("La base de datos no esta disponible en este momento"));
+    // .finally(() => console.log('finnaly'));
+  };
+getJobs();*/
+
+const getJobs = async () => {
+    try {
+        const response = await fetch(`${base_url}/jobs`);
+        const jobs = await response.json();
+        console.log(jobs);
+       
+    } 
+    catch (error) {
+        alert("La base de datos no esta disponible en este momento");
+       
+    }
+}
+getJobs()
+
+
+
