@@ -11,3 +11,6 @@ button {
 span {
     border-radius: 0.5em;
 }
+.gap{
+    gap: 50px;
+}

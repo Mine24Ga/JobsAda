@@ -7,6 +7,7 @@ const showElement = (element) => element.classList.remove("is-hidden");
 /********************************************************************************************* 
                          OBTENER ELEMENTO DEL DOM CON EL ID
 **********************************************************************************************/
+$("#location-search")
 const locationSearch = document.querySelector("#location-search");
 const senioritySearch = document.querySelector("#seniority-search");
 const categorySearch = document.querySelector("#category-search");
@@ -27,16 +28,18 @@ const jobCategory = document.querySelector('#job-category');
 const jobSeniority =  document.querySelector('#job-seniority');
 
 
+
 /********************************************************************************************* 
                                         EVENTOS
 **********************************************************************************************/
 //mostrar formulario para crear empleo
 const showFormJob = () => {
   hideElement(searchForm);
+  hideElement(cardContainer);
   showElement(createJobForm);
 };
 
-btnCreateJob.addEventListener("click", () => {
+$("#btn-create-job").addEventListener("click", () => {
   showFormJob();
 });
 
@@ -65,7 +68,7 @@ const createJobsCard = (jobs) => {
   cardContainer.innerHTML = "";
   for (const { name, description, location, seniority, category, id } of jobs) {
     cardContainer.innerHTML += `    
-        <div id="card" data-card=${id} class=" is-12 card column p-4 ">
+        <div id="card" data-card=${id} class="is-3 card column p-3">
         <div class="content">
              <h2 class="title is-5">${name}</h2>
             <p class="is-size-6">${description}</p>
@@ -84,9 +87,10 @@ const createJobsCard = (jobs) => {
 };
 //Obtener un empleo
 const seeJobDetails = (jobId) => {
-  fetch(`${base_url}${jobId}`)
+  fetch(`${base_url}/jobs/${jobId}`)
     .then((response) => response.json())
-    .then((data) => createCardDetail(data));
+    .then((data) => createCardDetail(data))
+   
 };
 
 const createCardDetail = ({
@@ -98,37 +102,43 @@ const createCardDetail = ({
   id,
 }) => {
   cardContainer.innerHTML = `    
-        <div id="cont-card" data-card=${id} >
+        <div id="cont-card"  class=" is-5 card column p-4 " data-card=${id} >
+
             <div class="content">
                 <div class="media">
-                    <p id="name" class="subtitle is-5">${name}</p>
+                    <p id="name" class="title is-5">${name}</p>
                 </div>
             </div>
+
             <div class="content has-text-centered">
-                <p id="description" class="is-size-7">${description}</p>
+                <p id="description" class="is-size-6">${description}</p>
             </div>
+
             <div id="tags" class="media">
-                <p class="has-text-dark is-size-7 has-background-primary p-1 m-1" id="location">${location}</p>
-                <p class="has-text-dark is-size-7 has-background-primary p-1 m-1" id="seniority">${seniority}</p>
-                <p class="has-text-dark is-size-7 has-background-primary p-1 m-1" id="category">${category}</p>
+                <span class=" p-3 m-2 is-size-7 has-background-primary " id="location">${location}</span>
+                <span class=" p-3 m-2 is-size-7 has-background-primary" id="seniority">${seniority}</span>
+                <span class=" p-3 m-2 is-size-7 has-background-primary " id="category">${category}</span>
             </div>
+
             <div id="container-buttons" class="buttons control">
-                <button data-id="${id}" class="button btn-edit-job is-small is-primary">
+                <button data-id="${id}" id="edit-job" class="button  is-info">
                     Edit Job
                 </button>
-                <div class="control" >
-                    <button data-id="${id}" class="button btn-msj-delete is-small is-danger">Delete Job</button>
-                </div>
+                <button data-id="${id}" id="delete-job" class="button  is-danger">
+                    Delete Job
+                </button>
             </div>
+            
         </div>`
 };
+
 
 //POST
 //formulario para crear un empleo
 const createNewJob = () => {
-    searchForm.style.display = 'none'
-    cardContainer.innerHTML = `
-                <form class="box"
+ 
+    formJob.innerHTML = `
+                <form class="box container"
                 id="create-job-form">
             <div class="field">
                    <div class="control">
@@ -198,6 +208,7 @@ const createNewJob = () => {
                 </div>
             </form>
             `
+           
 
     const submitJob = document.getElementById('submit-job')
     submitJob.addEventListener('click', (e) => {
@@ -209,7 +220,7 @@ const createNewJob = () => {
 
 btnCreateJob.addEventListener('click', createNewJob)
 
-
+//guardar el valor de la informacion del empleo
 const saveJobInfo = () => {
     return {
         name: document.getElementById('job-name').value,
@@ -235,7 +246,7 @@ const submitNewJob = () => {
             .catch(err => console.log(err))
             .finally(() => getJobs(), 1000)
             
-        }
+}
 
 
 
