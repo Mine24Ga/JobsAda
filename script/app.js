@@ -181,11 +181,13 @@ const createNewJob = () => {
                <div class="field">
                  <div class="control">
                      <select  class="input" name="Category" id="job-category">
-                         <option value="Category">Category...</option>
-                         <option value="Horse Care">Horse Care</option>
-                         <option value="Horse Competition">Competition</option>
-                         <option value="Horse Training">Training</option>
-                         <option value="Horse Breeding">Breeding</option>
+                     <option value="Category">Category...</option>
+                     <option value="Developer">Developer</option>
+                     <option value="DBA">DBA</option>
+                     <option value="Data Analyst">Data Analyst</option>
+                     <option value="DevOps">DevOps</option>
+                     <option value="QA automation">QA automation</option>
+                     <option value="QA manual">QA manual</option>
                      </select>
                  </div>
                </div>
