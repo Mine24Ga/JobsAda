@@ -228,6 +228,7 @@ const createNewJob = () => {
     submitJob.addEventListener('click', (e) => {
         e.preventDefault()
         submitNewJob()
+        validateNewJobForm()
     })
 }
 
@@ -260,6 +261,38 @@ const submitNewJob = () => {
             .catch(err => console.log(err))
             .finally(() => getJobs(), 1000)
             
+}
+
+const validateNewJobForm = () => {
+
+  const jobName = document.getElementById('job-name')
+  const jobDescription = document.getElementById('job-description')
+  const jobLocation = document.getElementById('job-location')
+  const jobCategory = document.getElementById('job-category')
+  const jobSeniority =  document.getElementById('job-seniority')
+
+
+  if (jobName.value === '' || jobDescription.value === '' || jobCategory.value === 'Category' || jobSeniority.value === 'Seniority' || jobLocation.value === 'Location') {
+      errorContainer.innerHTML = `
+      <div class="has-background-danger p-6 box" id="delete-container">
+      <div class="delete-warning"> 
+          <h3 class="title">Error</h3>
+          <p class="subtitle">Please fill every field! </p>
+          <div class="btn-container">
+              <button class="button is-info" id="close-alert">Close</button>
+          </div>
+      </div>
+  </div>`
+  } else {
+      submitNewJob()
+  }
+
+  const closeAlert = document.getElementById('close-alert')
+  const modalContainer = document.getElementById('delete-container')
+
+  closeAlert.addEventListener('click', () => {
+      modalContainer.style.display = 'none'
+  })
 }
 
 /*--------------------------------------------- PUT ---------------------------------------- */ 
@@ -365,6 +398,7 @@ cardContainer.innerHTML += `
   const btnEditJob = document.getElementById('btn-edit-job')
   btnEditJob.addEventListener('click', (e) => {
       e.preventDefault()
+      validateEditJobForm()
     
   })
 }
@@ -382,7 +416,37 @@ const editJob = (selectedID) => {
 }
 
 
+const validateEditJobForm = () => {
 
+  const jobName = document.getElementById('job-name')
+  const jobDescription = document.getElementById('job-description')
+  const jobLocation = document.getElementById('job-location')
+  const jobCategory = document.getElementById('job-category')
+  const jobSeniority =  document.getElementById('job-seniority')
+
+
+  if (jobName.value === '' || jobDescription.value === '' || jobCategory.value === 'Category' || jobSeniority.value === 'Seniority' || jobLocation.value === 'Location') {
+      errorContainer.innerHTML = `
+      <div class="has-background-danger p-6 box" id="delete-container">
+      <div class="delete-warning"> 
+          <h3 class="title">Error</h3>
+          <p class="subtitle">Please fill every field! </p>
+          <div class="btn-container">
+              <button class="button is-info" id="close-alert">Close</button>
+          </div>
+      </div>
+  </div>`
+  } else {
+      editJob(selectedID)
+  }
+
+  const closeAlert = document.getElementById('close-alert')
+  const modalContainer = document.getElementById('delete-container')
+
+  closeAlert.addEventListener('click', () => {
+      modalContainer.style.display = 'none'
+  })
+}
 /*------------------------------------------- DELETTE -------------------------------------- */
 //Eliminar un empleo 
 const deleteJob = (jobId) => {
@@ -424,4 +488,70 @@ const warningDelete = () => {
   })
 }
 
+
+
+/*--------------------------------------------- FILTROS ------------------------------------ */
+const searchBy = document.getElementById('search-by')
+let primaryFilter = ''
+let secondaryFilter = ''
+
+searchBy.addEventListener('change', () => {
+    primaryFilter = searchBy.value
+
+    if (searchBy.value === 'Location') {
+        locationSearch.classList.add('hidden')
+        senioritySearch.classList.remove('hidden')
+        categorySearch.classList.remove('hidden')
+
+    } else if (searchBy.value === 'Seniority') {
+        locationSearch.classList.remove('hidden')
+        senioritySearch.classList.add('hidden')
+        categorySearch.classList.remove('hidden')
+
+    } else  if (searchBy.value === 'Category') {
+        locationSearch.classList.remove('hidden')
+        senioritySearch.classList.remove('hidden')
+        categorySearch.classList.add('hidden')
+
+    } else {
+            locationSearch.classList.remove('hidden')
+            senioritySearch.classList.remove('hidden')
+            categorySearch.classList.remove('hidden')
+    }
+
+    if (primaryFilter === 'Location') {
+        locationSearch.addEventListener('change', () => {
+            secondaryFilter = locationSearch.value
+        })
+    } else if (primaryFilter === 'Category') {
+        categorySearch.addEventListener('change', () => {
+            secondaryFilter = categorySearch.value
+        }) 
+    } else if (primaryFilter === 'Seniority') {
+        senioritySearch.addEventListener('change', () => {
+            secondaryFilter = senioritySearch.value
+        })
+    }
+})
+
+
+const filterSearch = (secondaryFilter) => {
+    fetch(`${base_url}/jobs/?search=${secondaryFilter}`) //revisar
+        .then(res => res.json())
+        .then(data => createJobsCard(data))
+        .catch(error => console.log(error))
+}
+
+
+btnSearch.addEventListener('click', () => filterSearch(secondaryFilter))
+
+btnCancelSearch.addEventListener('click', () => {
+    getJobs()
+    primaryFilter = ''
+    secondaryFilter = ''
+    searchBy.value = 'SearchBy'
+    locationSearch.classList.remove('hidden')
+    senioritySearch.classList.remove('hidden')
+    categorySearch.classList.remove('hidden')
+})
 

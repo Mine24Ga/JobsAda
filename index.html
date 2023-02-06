@@ -75,8 +75,16 @@
     <!------------------------- FILTROS PARA SELECCIONAR -------------------------------->
     <form id="search-form" action="submit" class="p-2 columns is-justify-content-center">
 
-       <div class="column is-2 is-12-mobile">
-         <select name="Location" id="location-search" class="p-2">
+       <div class="column is-2 is-12-mobile ">
+        <select name="SearchBy" id="search-by" class="p-2 is-justify-content-center">
+            <option value="SearchBy">Search by..</option>
+            <option value="Location">Location</option>
+            <option value="Seniority">Seniority</option>
+            <option value="Category">Category</option>
+        </select>
+       </div>
+        <div class="column is-2 is-12-mobile show-bar">
+         <select name="Location" id="location-search" class="p-2 ">
              <option value="Location">Location...</option>
              <option value="Alemania<">Alemania</option>
              <option value="Argentina">Argentina</option>

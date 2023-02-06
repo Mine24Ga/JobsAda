@@ -14,3 +14,17 @@ span {
 .gap{
     gap: 50px;
 }
+#search-form {
+  margin: 0.625em auto;
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+}
+
+ #location-search,  #seniority-search,  #category-search {
+    display: none;
+  }
+  form .hidden {
+    display: block !important;
+  }
