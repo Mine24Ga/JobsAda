@@ -376,20 +376,23 @@ const editJob = (selectedID) => {
   })
   .then(() => seeJobDetails(selectedID))
   .catch(error => console.log(error))
+  .finally(() => getJobs(), 1000)
 }
 
 
 
 /*------------------------------------------- DELETTE -------------------------------------- */
-        
+//Eliminar un empleo 
 const deleteJob = (jobId) => {
   fetch(`${base_url}/jobs/${jobId}`, {
-  method: 'DELETE'
-})
+  method: 'DELETE'})
+
   .then(() => getJobs(), 1000)
   .catch(error => console.log(error))
+  .finally(() => getJobs(), 1000)
 }
 
+const warningModal = document.getElementById('delete-container')
 
 const warningDelete = () => {
   
@@ -409,7 +412,7 @@ const warningDelete = () => {
   const cancelBtn = document.getElementById('btn-cancel')
   const modalContainer = document.getElementById('delete-container')
   cancelBtn.addEventListener('click', () => {
-   
+      modalContainer.style.display = 'none'
       seeJobDetails(selectedID)
   })
 
