@@ -207,6 +207,7 @@ const createNewJob = () => {
                      <option value="DevOps">DevOps</option>
                      <option value="QA automation">QA automation</option>
                      <option value="QA manual">QA manual</option>
+                     <option value="UX/UI">UX/UI</option>
                      </select>
                  </div>
                </div>
@@ -324,6 +325,7 @@ cardContainer.innerHTML += `
                           <option value="DevOps" class="category-option">DevOps</option>
                           <option value="QA automation" class="category-option">QA automation</option>
                           <option value="QA manual" class="category-option">QA manual</option>
+                          <option value="UX/UI" class="category-option">UX/UI</option>
                           </select>
                     </div>
                   </div>
