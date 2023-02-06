@@ -1,6 +1,8 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+
+//MOSTRAR Y OCULTAR ELEMENTOS
 const hideElement = (element) => element.classList.add("is-hidden");
 const showElement = (element) => element.classList.remove("is-hidden");
 
@@ -21,11 +23,9 @@ const searchForm = document.querySelector("#search-form");
 const cardContainer = document.querySelector("#cards-container");
 const errorContainer = document.querySelector("#error-container");
 const formJob = document.querySelector("#form-job");
-const jobName = document.querySelector('#job-name');
-const jobDescription = document.querySelector('#job-description');
-const jobLocation = document.querySelector('#job-location');
-const jobCategory = document.querySelector('#job-category');
-const jobSeniority =  document.querySelector('#job-seniority');
+
+
+let selectedID, jobName, jobDescription, jobLocation, jobSeniority, jobCategory
 
 
 
@@ -37,11 +37,13 @@ const showFormJob = () => {
   hideElement(searchForm);
   hideElement(cardContainer);
   showElement(createJobForm);
+ 
 };
 
 $("#btn-create-job").addEventListener("click", () => {
   showFormJob();
 });
+
 
 /********************************************************************************************* 
                                         OPERACIONES
@@ -49,7 +51,7 @@ $("#btn-create-job").addEventListener("click", () => {
 let isEditing = false;
 const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
 
-//GET
+/*---------------------------------------------- GET ---------------------------------------- */
 // Obtener todos los empleos
 const getJobs = async () => {
   try {
@@ -63,7 +65,7 @@ const getJobs = async () => {
 };
 getJobs();
 
-//Cards para la vista de empleos
+//Cards para la vista de empleos (VISTA PRINCIPAL)
 const createJobsCard = (jobs) => {
   cardContainer.innerHTML = "";
   for (const { name, description, location, seniority, category, id } of jobs) {
@@ -80,7 +82,6 @@ const createJobsCard = (jobs) => {
         </div>
         <div id="buttons-container" class="control">
             <button onClick="seeJobDetails(${id})" class="button is-info"> See details</button>
-            <button class="button is-danger">Delete Job</button>
         </div>
     </div>`;
   }
@@ -90,9 +91,10 @@ const seeJobDetails = (jobId) => {
   fetch(`${base_url}/jobs/${jobId}`)
     .then((response) => response.json())
     .then((data) => createCardDetail(data))
-   
+    selectedID = jobId
 };
 
+//DETALLES DE EMPLEO
 const createCardDetail = ({
   name,
   description,
@@ -128,12 +130,19 @@ const createCardDetail = ({
                     Delete Job
                 </button>
             </div>
-            
         </div>`
+        
+        const btnEditJob = document.getElementById('edit-job')
+        btnEditJob.addEventListener('click', () => showEditForm(selectedID))
+
+        const btnDeleteJob = document.getElementById('delete-job')
+        btnDeleteJob.addEventListener('click', warningDelete)
+
+       
 };
 
 
-//POST
+/*-------------------------------------------------- POST ----------------------------------- */
 //formulario para crear un empleo
 const createNewJob = () => {
  
@@ -208,7 +217,11 @@ const createNewJob = () => {
                 </div>
             </form>
             `
-           
+            const jobName = document.querySelector('#job-name');
+            const jobDescription = document.querySelector('#job-description');
+            const jobLocation = document.querySelector('#job-location');
+            const jobCategory = document.querySelector('#job-category');
+            const jobSeniority =  document.querySelector('#job-seniority');   
 
     const submitJob = document.getElementById('submit-job')
     submitJob.addEventListener('click', (e) => {
@@ -217,7 +230,7 @@ const createNewJob = () => {
     })
 }
 
-
+//CREAR EMPLEO
 btnCreateJob.addEventListener('click', createNewJob)
 
 //guardar el valor de la informacion del empleo
@@ -248,8 +261,162 @@ const submitNewJob = () => {
             
 }
 
+/*--------------------------------------------- PUT ---------------------------------------- */ 
+//no funciona
+//sección para editar el empleo 
+const showEditForm = (selectedID) => {
+cardContainer.innerHTML += `
+              <form class="edit-job-form box container " id="edit-job-form">
+
+               <div class="field">
+                 <div class="control">
+                 <label class="label">Job Title</label>
+                         <input class="input" type="text" id="job-name" value="${jobName}"/>
+                 </div>
+               </div>
+
+                 <div class="field">
+                 <label class="label">Description: </label>
+                   <div class="control">
+                         <textarea class="textarea" id="job-description"/>${jobDescription}</textarea>
+                   </div>
+                 </div>
+
+             <div class="field">
+             <label class="label">Tags</label>
+                  <div class="control">
+                        <select  class="input" name="Location" id="job-location">
+                        <option value="Location" class="location-option">Location...</option>
+                        <option value="Alemania" class="location-option">Alemania</option>
+                        <option value="Argentina" class="location-option">Argentina</option>
+                        <option value="Australia" class="location-option">Australia</option>
+                        <option value="Bolivia" class="location-option">Bolivia</option>
+                        <option value="Brasil" class="location-option">Brasil</option>
+                        <option value="Canadá" class="location-option">Canadá</option>
+                        <option value="Chile" class="location-option">Chile</option>
+                        <option value="Colombia" class="location-option">Colombia</option>
+                        <option value="Ecuador" class="location-option">Ecuador</option>
+                        <option value="España" class="location-option">España</option>
+                        <option value="Francia" class="location-option">Francia</option>
+                        </select>
+                  </div>
+             </div>
+
+              <div class="field">
+                   <div class="control">
+                         <select class="input" name="Seniority" id="job-seniority">
+                             <option value="Seniority" class="seniority-option">Seniority...</option>
+                             <option value="Trainee" class="seniority-option">Trainee</option>
+                             <option value="Junior" class="seniority-option">Junior</option>
+                             <option value="Semi-Senior" class="seniority-option">Semi Senior</option>
+                             <option value="Senior" class="seniority-option">Senior</option>
+                         </select>
+                   </div>
+              </div>
+
+                  <div class="field">
+                    <div class="control">
+                          <select  class="input" name="Category" id="job-category">
+                          <option value="Category" class="category-option">Category...</option>
+                          <option value="Developer" class="category-option">Developer</option>
+                          <option value="DBA" class="category-option">DBA</option>
+                          <option value="Data Analyst" class="category-option">Data Analyst</option>
+                          <option value="DevOps" class="category-option">DevOps</option>
+                          <option value="QA automation" class="category-option">QA automation</option>
+                          <option value="QA manual" class="category-option">QA manual</option>
+                          </select>
+                    </div>
+                  </div>
+                      
+                  <div>
+                      <button class="button is-danger" id="cancel-edit">Cancel</button>
+                      <button class="button is-info" id="btn-edit-job">Edit job</button> 
+                  </div>
+              </form>
+                      `
+
+  const locationOption = document.querySelectorAll('.location-option')  
+      for (const option of locationOption) {
+          option.value === jobLocation && option.setAttribute('selected', 'selected')
+  }
+  
+  const seniorityOption = document.querySelectorAll('.seniority-option')  
+  for (const option of seniorityOption) {
+      option.value === jobSeniority && option.setAttribute('selected', 'selected')
+  }
+  
+  const categoryOption = document.querySelectorAll('.category-option')  
+  for (const option of categoryOption) {
+      option.value == jobCategory && option.setAttribute('selected', 'selected')
+  }
+
+
+  const btnCancelEdit = document.getElementById('cancel-edit')
+  btnCancelEdit.addEventListener('click', (e) => {
+      e.preventDefault()
+
+  const editJobForm = document.getElementById('edit-job-form')
+      editJobForm.style.display = 'none'
+      seeJobDetails(selectedID)
+  })
+
+  const btnEditJob = document.getElementById('btn-edit-job')
+  btnEditJob.addEventListener('click', (e) => {
+      e.preventDefault()
+    
+  })
+}
+const editJob = (selectedID) => {
+  fetch(`${base_url}/jobs/${selectedID}`, {
+      method: "PUT",
+          headers: {
+                  "Content-Type": "Application/json"
+              },
+          body: JSON.stringify(saveJobInfo())
+  })
+  .then(() => seeJobDetails(selectedID))
+  .catch(error => console.log(error))
+}
 
 
 
+/*------------------------------------------- DELETTE -------------------------------------- */
+        
+const deleteJob = (jobId) => {
+  fetch(`${base_url}/jobs/${jobId}`, {
+  method: 'DELETE'
+})
+  .then(() => getJobs(), 1000)
+  .catch(error => console.log(error))
+}
+
+
+const warningDelete = () => {
+  
+  cardContainer.innerHTML += `
+  <div class="has-background-danger p-6 box" id="delete-container">
+      <div class="delete-warning"> 
+          <h3 class="title">Warning</h3>
+          <p class="subtitle p-2">Are you sure you want to delete this job offer?</p>
+          <div class="btn-container">
+              <button class="button is-info" id="btn-cancel">Cancel</button>
+              <button class="button is-primary" id="delete-offer">Delete Job</button>
+          </div>
+      </div>
+  </div>
+  `
+  
+  const cancelBtn = document.getElementById('btn-cancel')
+  const modalContainer = document.getElementById('delete-container')
+  cancelBtn.addEventListener('click', () => {
+   
+      seeJobDetails(selectedID)
+  })
+
+  const deleteJobOffer = document.getElementById('delete-offer')
+  deleteJobOffer.addEventListener('click', () => {
+      deleteJob(selectedID) 
+  })
+}
 
 
