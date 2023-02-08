@@ -52,19 +52,6 @@ let isEditing = false;
 const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
 
 /*---------------------------------------------- GET ---------------------------------------- */
-// Obtener todos los empleos
-const getJobs = async () => {
-  try {
-    const response = await fetch(`${base_url}/jobs`);
-    const jobs = await response.json();
-    console.log(jobs);
-    createJobsCard(jobs);
-  } catch (error) {
-    alert("La base de datos no esta disponible en este momento");
-  }
-};
-getJobs();
-
 //Cards para la vista de empleos (VISTA PRINCIPAL)
 const createJobsCard = (jobs) => {
   cardContainer.innerHTML = "";
@@ -86,13 +73,7 @@ const createJobsCard = (jobs) => {
     </div>`;
   }
 };
-//Obtener un empleo
-const seeJobDetails = (jobId) => {
-  fetch(`${base_url}/jobs/${jobId}`)
-    .then((response) => response.json())
-    .then((data) => createCardDetail(data))
-    selectedID = jobId
-};
+
 
 //DETALLES DE EMPLEO
 const createCardDetail = ({
@@ -247,21 +228,7 @@ const saveJobInfo = () => {
     } 
 }
 
-//generar nuevo empleo
-const submitNewJob = () => {
 
-    fetch(`https://63dbee42b8e69785e48e794c.mockapi.io/api/jobs`, {
-            method: "POST",
-            headers: {
-                    "Content-Type": "Application/json"
-                },
-                body: JSON.stringify(saveJobInfo())
-            })
-            .then (data => console.log(data))
-            .catch(err => console.log(err))
-            .finally(() => getJobs(), 1000)
-            
-}
 
 const validateNewJobForm = () => {
 
@@ -402,18 +369,7 @@ cardContainer.innerHTML += `
     
   })
 }
-const editJob = (selectedID) => {
-  fetch(`${base_url}/jobs/${selectedID}`, {
-      method: "PUT",
-          headers: {
-                  "Content-Type": "Application/json"
-              },
-          body: JSON.stringify(saveJobInfo())
-  })
-  .then(() => seeJobDetails(selectedID))
-  .catch(error => console.log(error))
-  .finally(() => getJobs(), 1000)
-}
+
 
 
 const validateEditJobForm = () => {
@@ -448,15 +404,6 @@ const validateEditJobForm = () => {
   })
 }
 /*------------------------------------------- DELETTE -------------------------------------- */
-//Eliminar un empleo 
-const deleteJob = (jobId) => {
-  fetch(`${base_url}/jobs/${jobId}`, {
-  method: 'DELETE'})
-
-  .then(() => getJobs(), 1000)
-  .catch(error => console.log(error))
-  .finally(() => getJobs(), 1000)
-}
 
 const warningModal = document.getElementById('delete-container')
 
