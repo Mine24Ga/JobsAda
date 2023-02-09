@@ -348,7 +348,7 @@ const validateEditJobForm = () => {
 //NO FUNCIONAN 
 const searchBy = document.getElementById('search-by')
 let primaryFilter = ''
-let secondaryFilter = ''
+let secondaryFilter = ' '
 
 searchBy.addEventListener('change', () => {
     primaryFilter = searchBy.value
@@ -396,7 +396,6 @@ const filterSearch = (secondaryFilter) => {
         .then(data => createJobsCard(data))
         .catch(error => console.log(error))
 }
-
 
 btnSearch.addEventListener('click', () => filterSearch(secondaryFilter))
 

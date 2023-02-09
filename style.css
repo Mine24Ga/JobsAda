@@ -28,3 +28,15 @@ span {
   form .hidden {
     display: block !important;
   }
+  #footer {
+    display: flex;
+    justify-content: center;
+   width: 100%;
+   height: auto;
+   background-color: rgb(77, 123, 203);
+   margin-top: 2em;
+  }
+  footer p {
+    color: black;
+    font-size: 1.5em;
+  }
