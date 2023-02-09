@@ -17,6 +17,7 @@ const btnSearch = document.querySelector("#btn-search");
 const btnCancelSearch = document.querySelector("#btn-cancel-search");
 const createJobForm = document.querySelector("#create-job-form");
 const searchForm = document.querySelector("#search-form");
+const cardContainer = document.querySelector("#cards-container");
 let selectedID, jobName, jobDescription, jobLocation, jobSeniority, jobCategory
 
 /********************************************************************************************* 
@@ -27,9 +28,9 @@ const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
 
 /*----------------------- Cards para la vista de empleos (VISTA PRINCIPAL) ------------------*/
 const createJobsCard = (jobs) => {
-$("#cards-container").innerHTML = "";
+cardContainer.innerHTML = "";
   for (const { name, description, location, seniority, category, id } of jobs) {
-    $("#cards-container").innerHTML += `    
+   cardContainer.innerHTML += `    
         <div id="card" data-card=${id} class="is-3 card column p-3">
         <div class="content">
              <h2 class="title is-5">${name}</h2>
@@ -215,7 +216,7 @@ const validateNewJobForm = () => {
 /*-------------------------------- formulario para editar el empleo -------------------------*/ 
 //no funciona
 const showEditForm = (selectedID) => {
-    $("#cards-container").innerHTML += `
+    cardContainer.innerHTML += `
               <form class="edit-job-form box container " id="edit-job-form">
 
                <div class="field">
