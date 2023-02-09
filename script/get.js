@@ -11,6 +11,8 @@ const getJobs = async () => {
 };
   getJobs();
 
+
+
 //Obtener un empleo
 const seeJobDetails = (jobId) => {
     fetch(`${base_url}/jobs/${jobId}`)
@@ -18,3 +20,5 @@ const seeJobDetails = (jobId) => {
       .then((data) => createCardDetail(data))
       selectedID = jobId
 };
+
+//cuando movi el codigo para su respectivo archivo se me empezo a duplicar la card cuando creo un nuevo empleo.... ? 

@@ -1,7 +1,8 @@
+/********************************************************************************************* 
+                                      UTILITIES
+**********************************************************************************************/
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
-
-
 //MOSTRAR Y OCULTAR ELEMENTOS
 const hideElement = (element) => element.classList.add("is-hidden");
 const showElement = (element) => element.classList.remove("is-hidden");
@@ -9,54 +10,26 @@ const showElement = (element) => element.classList.remove("is-hidden");
 /********************************************************************************************* 
                          OBTENER ELEMENTO DEL DOM CON EL ID
 **********************************************************************************************/
-$("#location-search")
 const locationSearch = document.querySelector("#location-search");
 const senioritySearch = document.querySelector("#seniority-search");
 const categorySearch = document.querySelector("#category-search");
 const btnSearch = document.querySelector("#btn-search");
 const btnCancelSearch = document.querySelector("#btn-cancel-search");
-const btnCreateJob = document.querySelector("#btn-create-job");
 const createJobForm = document.querySelector("#create-job-form");
-const btnCancel = document.querySelector("#btn-cancel");
-const btnSubmit = document.querySelector("#btn-submit");
 const searchForm = document.querySelector("#search-form");
-const cardContainer = document.querySelector("#cards-container");
-const errorContainer = document.querySelector("#error-container");
-const formJob = document.querySelector("#form-job");
-
-
 let selectedID, jobName, jobDescription, jobLocation, jobSeniority, jobCategory
 
-
-
 /********************************************************************************************* 
-                                        EVENTOS
-**********************************************************************************************/
-//mostrar formulario para crear empleo
-const showFormJob = () => {
-  hideElement(searchForm);
-  hideElement(cardContainer);
-  showElement(createJobForm);
- 
-};
-
-$("#btn-create-job").addEventListener("click", () => {
-  showFormJob();
-});
-
-
-/********************************************************************************************* 
-                                        OPERACIONES
+                                    OPERACIONES DOM
 **********************************************************************************************/
 let isEditing = false;
 const base_url = "https://63dbee42b8e69785e48e794c.mockapi.io/api";
 
-/*---------------------------------------------- GET ---------------------------------------- */
-//Cards para la vista de empleos (VISTA PRINCIPAL)
+/*----------------------- Cards para la vista de empleos (VISTA PRINCIPAL) ------------------*/
 const createJobsCard = (jobs) => {
-  cardContainer.innerHTML = "";
+$("#cards-container").innerHTML = "";
   for (const { name, description, location, seniority, category, id } of jobs) {
-    cardContainer.innerHTML += `    
+    $("#cards-container").innerHTML += `    
         <div id="card" data-card=${id} class="is-3 card column p-3">
         <div class="content">
              <h2 class="title is-5">${name}</h2>
@@ -75,7 +48,7 @@ const createJobsCard = (jobs) => {
 };
 
 
-//DETALLES DE EMPLEO
+/*-------------------------------- Card del detalle de empleo -------------------------------*/
 const createCardDetail = ({
   name,
   description,
@@ -84,7 +57,7 @@ const createCardDetail = ({
   category,
   id,
 }) => {
-  cardContainer.innerHTML = `    
+    $("#cards-container").innerHTML = `    
         <div id="cont-card"  class=" is-5 card column p-4 " data-card=${id} >
 
             <div class="content">
@@ -112,22 +85,14 @@ const createCardDetail = ({
                 </button>
             </div>
         </div>`
-        
-        const btnEditJob = document.getElementById('edit-job')
-        btnEditJob.addEventListener('click', () => showEditForm(selectedID))
-
-        const btnDeleteJob = document.getElementById('delete-job')
-        btnDeleteJob.addEventListener('click', warningDelete)
-
-       
+        //botones editar o eliminar de la card detalle. 
+        $('#edit-job').addEventListener('click', () => showEditForm(selectedID))
+        $('#delete-job').addEventListener('click', warningDelete)   
 };
 
-
-/*-------------------------------------------------- POST ----------------------------------- */
-//formulario para crear un empleo
+/*--------------------------------- formulario para crear empleo----------------------------- */
 const createNewJob = () => {
- 
-    formJob.innerHTML = `
+    $("#form-job").innerHTML = `
                 <form class="box container"
                 id="create-job-form">
             <div class="field">
@@ -199,48 +164,36 @@ const createNewJob = () => {
                 </div>
             </form>
             `
-            const jobName = document.querySelector('#job-name');
-            const jobDescription = document.querySelector('#job-description');
-            const jobLocation = document.querySelector('#job-location');
-            const jobCategory = document.querySelector('#job-category');
-            const jobSeniority =  document.querySelector('#job-seniority');   
+            $('#job-name');
+            $('#job-description');
+            $('#job-location');
+            $('#job-category');
+            $('#job-seniority');   
 
-    const submitJob = document.getElementById('submit-job')
-    submitJob.addEventListener('click', (e) => {
+    $('#submit-job').addEventListener('click', (e) => {
         e.preventDefault()
         submitNewJob()
         validateNewJobForm()
     })
+    
 }
-
 //CREAR EMPLEO
-btnCreateJob.addEventListener('click', createNewJob)
-
+$("#btn-create-job").addEventListener('click', createNewJob)
 //guardar el valor de la informacion del empleo
 const saveJobInfo = () => {
     return {
-        name: document.getElementById('job-name').value,
-        description: document.getElementById('job-description').value,
-        location: document.getElementById('job-location').value,
-        category: document.getElementById('job-category').value,
-        seniority: document.getElementById('job-seniority').value,
+        name: $('#job-name').value,
+        description: $('#job-description').value,
+        location: $('#job-location').value,
+        category: $('#job-category').value,
+        seniority: $('#job-seniority').value,
        
     } 
 }
-
-
-
+//validacion del formulario para crear un empleo
 const validateNewJobForm = () => {
-
-  const jobName = document.getElementById('job-name')
-  const jobDescription = document.getElementById('job-description')
-  const jobLocation = document.getElementById('job-location')
-  const jobCategory = document.getElementById('job-category')
-  const jobSeniority =  document.getElementById('job-seniority')
-
-
-  if (jobName.value === '' || jobDescription.value === '' || jobCategory.value === 'Category' || jobSeniority.value === 'Seniority' || jobLocation.value === 'Location') {
-      errorContainer.innerHTML = `
+  if ($('#job-name').value === '' || $('#job-description').value === '' || $('#job-category').value === 'Category' || $('#job-seniority').value === 'Seniority' || $('#job-location').value === 'Location') {
+    $("#error-container").innerHTML = `
       <div class="has-background-danger p-6 box" id="delete-container">
       <div class="delete-warning"> 
           <h3 class="title">Error</h3>
@@ -253,20 +206,16 @@ const validateNewJobForm = () => {
   } else {
       submitNewJob()
   }
-
-  const closeAlert = document.getElementById('close-alert')
-  const modalContainer = document.getElementById('delete-container')
-
-  closeAlert.addEventListener('click', () => {
-      modalContainer.style.display = 'none'
+     //evento para el boton de cerrar modal cuando los datos no estan completos
+    $('#close-alert').addEventListener('click', () => {
+     $('#delete-container').style.display = 'none'
   })
 }
 
-/*--------------------------------------------- PUT ---------------------------------------- */ 
+/*-------------------------------- formulario para editar el empleo -------------------------*/ 
 //no funciona
-//sección para editar el empleo 
 const showEditForm = (selectedID) => {
-cardContainer.innerHTML += `
+    $("#cards-container").innerHTML += `
               <form class="edit-job-form box container " id="edit-job-form">
 
                <div class="field">
@@ -351,38 +300,23 @@ cardContainer.innerHTML += `
   for (const option of categoryOption) {
       option.value == jobCategory && option.setAttribute('selected', 'selected')
   }
-
-
-  const btnCancelEdit = document.getElementById('cancel-edit')
-  btnCancelEdit.addEventListener('click', (e) => {
+   //evento para el boton de cancelar editar
+  $('#cancel-edit').addEventListener('click', (e) => {
       e.preventDefault()
-
-  const editJobForm = document.getElementById('edit-job-form')
-      editJobForm.style.display = 'none'
+  $('#edit-job-form').style.display = 'none'
       seeJobDetails(selectedID)
   })
-
-  const btnEditJob = document.getElementById('btn-edit-job')
-  btnEditJob.addEventListener('click', (e) => {
+  //evento para el boton de editar (NO FUNCIONA)?
+  $('#btn-edit-job').addEventListener('click', (e) => {
       e.preventDefault()
       validateEditJobForm()
     
   })
 }
-
-
-
+//validacion del formulario de editar empleo
 const validateEditJobForm = () => {
-
-  const jobName = document.getElementById('job-name')
-  const jobDescription = document.getElementById('job-description')
-  const jobLocation = document.getElementById('job-location')
-  const jobCategory = document.getElementById('job-category')
-  const jobSeniority =  document.getElementById('job-seniority')
-
-
-  if (jobName.value === '' || jobDescription.value === '' || jobCategory.value === 'Category' || jobSeniority.value === 'Seniority' || jobLocation.value === 'Location') {
-      errorContainer.innerHTML = `
+    if ($('#job-name').value === '' || $('#job-description').value === '' || $('#job-category').value === 'Category' || $('#job-seniority').value === 'Seniority' || $('#job-location').value === 'Location') {
+    $("#error-container").innerHTML = `
       <div class="has-background-danger p-6 box" id="delete-container">
       <div class="delete-warning"> 
           <h3 class="title">Error</h3>
@@ -395,45 +329,12 @@ const validateEditJobForm = () => {
   } else {
       editJob(selectedID)
   }
-
-  const closeAlert = document.getElementById('close-alert')
-  const modalContainer = document.getElementById('delete-container')
-
-  closeAlert.addEventListener('click', () => {
-      modalContainer.style.display = 'none'
+    //evento para el boton de cerrar modal 
+  $('#close-alert').addEventListener('click', () => {
+    $('#delete-container').style.display = 'none'
   })
 }
-/*------------------------------------------- DELETTE -------------------------------------- */
 
-const warningModal = document.getElementById('delete-container')
-
-const warningDelete = () => {
-  
-  cardContainer.innerHTML += `
-  <div class="has-background-danger p-6 box" id="delete-container">
-      <div class="delete-warning"> 
-          <h3 class="title">Warning</h3>
-          <p class="subtitle p-2">Are you sure you want to delete this job offer?</p>
-          <div class="btn-container">
-              <button class="button is-info" id="btn-cancel">Cancel</button>
-              <button class="button is-primary" id="delete-offer">Delete Job</button>
-          </div>
-      </div>
-  </div>
-  `
-  
-  const cancelBtn = document.getElementById('btn-cancel')
-  const modalContainer = document.getElementById('delete-container')
-  cancelBtn.addEventListener('click', () => {
-      modalContainer.style.display = 'none'
-      seeJobDetails(selectedID)
-  })
-
-  const deleteJobOffer = document.getElementById('delete-offer')
-  deleteJobOffer.addEventListener('click', () => {
-      deleteJob(selectedID) 
-  })
-}
 
 
 
@@ -502,3 +403,17 @@ btnCancelSearch.addEventListener('click', () => {
     categorySearch.classList.remove('hidden')
 })
 
+/********************************************************************************************* 
+                                        EVENTOS
+**********************************************************************************************/
+//mostrar formulario para crear empleo
+const showFormJob = () => {
+    hideElement(searchForm);
+    hideElement(cardContainer);
+    showElement(createJobForm);
+   
+  };
+  
+  $("#btn-create-job").addEventListener("click", () => {
+    showFormJob();
+  });
