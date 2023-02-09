@@ -339,24 +339,24 @@ const validateEditJobForm = () => {
 
 
 /*--------------------------------------------- FILTROS ------------------------------------ */
-const searchBy = document.getElementById('search-by')
+//NO FUNCIONAN 
 let primaryFilter = ''
 let secondaryFilter = ''
 
-searchBy.addEventListener('change', () => {
+$('#search-by').addEventListener('change', () => {
     primaryFilter = searchBy.value
 
-    if (searchBy.value === 'Location') {
+    if ($('#search-by').value === 'Location') {
         locationSearch.classList.add('hidden')
         senioritySearch.classList.remove('hidden')
         categorySearch.classList.remove('hidden')
 
-    } else if (searchBy.value === 'Seniority') {
+    } else if ($('#search-by').value === 'Seniority') {
         locationSearch.classList.remove('hidden')
         senioritySearch.classList.add('hidden')
         categorySearch.classList.remove('hidden')
 
-    } else  if (searchBy.value === 'Category') {
+    } else  if ($('#search-by').value === 'Category') {
         locationSearch.classList.remove('hidden')
         senioritySearch.classList.remove('hidden')
         categorySearch.classList.add('hidden')
@@ -397,7 +397,7 @@ btnCancelSearch.addEventListener('click', () => {
     getJobs()
     primaryFilter = ''
     secondaryFilter = ''
-    searchBy.value = 'SearchBy'
+    $('#search-by').value = 'SearchBy'
     locationSearch.classList.remove('hidden')
     senioritySearch.classList.remove('hidden')
     categorySearch.classList.remove('hidden')
