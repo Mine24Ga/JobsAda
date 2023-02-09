@@ -88,7 +88,12 @@ const createCardDetail = ({
         </div>`
         //botones editar o eliminar de la card detalle. 
         $('#edit-job').addEventListener('click', () => showEditForm(selectedID))
-        $('#delete-job').addEventListener('click', warningDelete)   
+        $('#delete-job').addEventListener('click', warningDelete) 
+    jobName = name
+    jobDescription = description
+    jobLocation = location
+    jobCategory = category
+    jobSeniority = seniority  
 };
 
 /*--------------------------------- formulario para crear empleo----------------------------- */
