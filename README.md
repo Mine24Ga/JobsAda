@@ -11,4 +11,10 @@ JobsAda es una app, que permite buscar y crear nuevos empleos.
 - API:
     - La API que se utilizo para la creación de este proyecto es MockAPI. 
     - Tiene un Endpoint llamado *jobs* el cual permite hacer peticiones GET, POST, PUT y DELETE.
+
+![Vista principal de la app](assets/jobs.png)
+
+## Link
+
+- [Enlace directo a la app](https://jobsada.netlify.app/)
   
